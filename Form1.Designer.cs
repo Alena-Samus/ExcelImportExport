@@ -65,9 +65,9 @@ namespace ExcelImportExport
             // ResultsList2
             // 
             this.ResultsList2.FormattingEnabled = true;
-            this.ResultsList2.Location = new System.Drawing.Point(493, 32);
+            this.ResultsList2.Location = new System.Drawing.Point(12, 228);
             this.ResultsList2.Name = "ResultsList2";
-            this.ResultsList2.Size = new System.Drawing.Size(264, 173);
+            this.ResultsList2.Size = new System.Drawing.Size(764, 173);
             this.ResultsList2.TabIndex = 2;
             // 
             // Form1

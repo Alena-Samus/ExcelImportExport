@@ -14,7 +14,7 @@ namespace ExcelImportExport
 {
     public partial class Form1 : Form
     {
-        string[,] list = new string[50, 5];
+        string[,] list = new string[50, 50];
 
         List<List<string>> list_ = new List<List<string>>();
 
@@ -25,7 +25,7 @@ namespace ExcelImportExport
 
         private void ImportBtn_Click(object sender, EventArgs e)
         {
-            int n = ExportExcel();
+            int[] n = ExportExcel();
 
             ResultsList.Items.Clear();
             
@@ -40,21 +40,23 @@ namespace ExcelImportExport
                 }
 
                 ResultsList2.Items.Add(s);
+
             }
 
-            for (int i = 0; i < n; i++) // по всем строкам
+            for (int i = 0; i < n[0]; i++) // по всем строкам
             {
                 s = "";
-                for (int j = 0; j < 5; j++) //по всем колонкам
+                for (int j = 0; j < n[1]; j++) //по всем колонкам
                     s += " | " + list[i, j];
                 ResultsList.Items.Add(s);
             }
 
         }
         // Импорт данных из Excel-файла (не более 5 столбцов и любое количество строк <= 50.
-        private int ExportExcel()
+        private int[] ExportExcel()
         {
-            List <string> temp = new List<string>();
+            
+            int[] result = new int[]{0, 0};
             // Выбрать путь и имя файла в диалоговом окне
             OpenFileDialog ofd = new OpenFileDialog();
 
@@ -68,7 +70,7 @@ namespace ExcelImportExport
             ofd.Title = "Выберите файл базы данных";
 
             if (!(ofd.ShowDialog() == DialogResult.OK)) // если файл БД не выбран -> Выход
-                return 0;
+                return result;
 
             Excel.Application ObjWorkExcel = new Excel.Application();
 
@@ -82,25 +84,40 @@ namespace ExcelImportExport
 
             int lastRow = (int)lastCell.Row;
 
+            result[0] = lastRow;
+            result[1] = lastColumn;
+            
             // Перенос в промежуточный массив класса Form1: string[,] list = new string[50, 5]; 
             for (int j = 0; j < lastColumn; j++) //по всем колонкам
             {
                 for (int i = 0; i < lastRow; i++) // по всем строкам
-                {
-                    temp.Add("|" + ObjWorkSheet.Cells[i + 1, j + 1].Text.ToString());
-
-                    list[i, j] = ObjWorkSheet.Cells[i + 1, j + 1].Text.ToString(); //считываем данные
+                {             
+                   list[i, j] = ObjWorkSheet.Cells[i + 1, j + 1].Text.ToString(); //считываем данные
                 }
 
-                list_.Add(temp);
             }
+
+            for (int j = 0; j < lastRow; j++) //по всем колонкам
+            {
+                List<string> temp = new List<string>();
+
+                for (int i = 0; i < lastColumn; i++) // по всем строкам
+                {
+                    
+                    temp.Add(ObjWorkSheet.Cells[j + 1, i + 1].Text.ToString());
+                    
+                }
+                list_.Add(temp);
+                
+            }
+
             ObjWorkBook.Close(false, Type.Missing, Type.Missing); //закрыть не сохраняя
             
             ObjWorkExcel.Quit(); // выйти из Excel
             
             GC.Collect(); // убрать за собой
             
-            return lastRow;
+            return result;
         }
     }
 }
