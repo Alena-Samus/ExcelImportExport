@@ -14,9 +14,12 @@ namespace ExcelImportExport
 {
     public partial class Form1 : Form
     {
-        string[,] list = new string[50, 50];
-
         List<List<string>> list_ = new List<List<string>>();
+        List<List<string>> estimatesId = new List<List<string>>();
+        List<string> allEstimates = new List<string>();
+        List<string> remarks = new List<string>();
+        List<string> missing = new List<string>();
+        int count = 0;
 
         public Form1()
         {
@@ -31,26 +34,57 @@ namespace ExcelImportExport
             
             string s;
 
-            foreach(var item in list_)
+            
+            foreach (var item in list_)
             {
-                s = "";
-                foreach(var elem in item)
+                allEstimates.Add(item[0].ToString());
+
+                if (!string.IsNullOrEmpty(item[5]))
                 {
-                    s +="|" + elem.ToString();
-                }
+                    remarks.Add(item[5]);
+                }                           
+                                
+            }
+            remarksCount.Text = remarks.Count.ToString();
 
-                ResultsList2.Items.Add(s);
-
+            foreach(var item in remarks)
+            {
+                ResultsList.Items.Add(item);
             }
 
-            for (int i = 0; i < n[0]; i++) // по всем строкам
+            foreach (var item in list_)
+            {
+                if (remarks.Contains(item[0]))
+                {
+                    estimatesId.Add(item);
+                }
+            }
+
+            foreach (var item in estimatesId)
             {
                 s = "";
-                for (int j = 0; j < n[1]; j++) //по всем колонкам
-                    s += " | " + list[i, j];
-                ResultsList.Items.Add(s);
+                s = item[0] + "|" + item[1];
+               
+                coincidencesBox.Items.Add(s);
             }
+            coincidences.Text = estimatesId.Count.ToString();
 
+            foreach (var item in list_)
+            {
+                if (remarks.Contains(item[0]))
+                {
+                    estimatesId.Add(item);
+                }
+            }
+            foreach (var item in remarks)
+            {
+                if (!allEstimates.Contains(item))
+                {
+                    missingBox.Items.Add(item);
+                    count++;
+                }
+            }
+            missingCountLb.Text = count.ToString();
         }
         // Импорт данных из Excel-файла (не более 5 столбцов и любое количество строк <= 50.
         private int[] ExportExcel()
@@ -86,16 +120,7 @@ namespace ExcelImportExport
 
             result[0] = lastRow;
             result[1] = lastColumn;
-            
-            // Перенос в промежуточный массив класса Form1: string[,] list = new string[50, 5]; 
-            for (int j = 0; j < lastColumn; j++) //по всем колонкам
-            {
-                for (int i = 0; i < lastRow; i++) // по всем строкам
-                {             
-                   list[i, j] = ObjWorkSheet.Cells[i + 1, j + 1].Text.ToString(); //считываем данные
-                }
 
-            }
 
             for (int j = 0; j < lastRow; j++) //по всем колонкам
             {
@@ -118,6 +143,11 @@ namespace ExcelImportExport
             GC.Collect(); // убрать за собой
             
             return result;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
