@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -31,7 +34,10 @@ namespace ExcelImportExport
             int[] n = ExportExcel();
 
             ResultsList.Items.Clear();
-            
+            coincidencesBox.Items.Clear();
+            missingBox.Items.Clear();
+
+
             string s;
 
             
@@ -69,28 +75,27 @@ namespace ExcelImportExport
             }
             coincidences.Text = estimatesId.Count.ToString();
 
-            foreach (var item in list_)
-            {
-                if (remarks.Contains(item[0]))
-                {
-                    estimatesId.Add(item);
-                }
-            }
             foreach (var item in remarks)
             {
                 if (!allEstimates.Contains(item))
                 {
+                    missing.Add(item);
                     missingBox.Items.Add(item);
                     count++;
                 }
             }
             missingCountLb.Text = count.ToString();
         }
+
         // Импорт данных из Excel-файла (не более 5 столбцов и любое количество строк <= 50.
         private int[] ExportExcel()
         {
             
             int[] result = new int[]{0, 0};
+            list_.Clear();
+            remarks.Clear();
+            estimatesId.Clear();
+            missing.Clear();
             // Выбрать путь и имя файла в диалоговом окне
             OpenFileDialog ofd = new OpenFileDialog();
 
@@ -148,6 +153,54 @@ namespace ExcelImportExport
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void ExportToExcelBtn_Click(object sender, EventArgs e)
+        {
+            Excel.Application xlApp;
+            Excel.Workbook xlWorkBook;
+            Excel.Worksheet xlWorkSheet;
+            Excel.Range range;
+
+            string str;
+            int rCnt;
+            int cCnt;
+            int rw = 0;
+            int cl = 0;
+            
+            xlApp = new Excel.Application();
+            xlWorkBook = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets[1];
+            xlWorkSheet.Name = "SomeName";
+            range = xlWorkSheet.UsedRange;
+
+            foreach (var item in remarks)
+            {
+                rw++;
+                xlWorkSheet.Cells[rw, 1] = item;
+            }
+            rw = 0;
+
+            foreach (var item in estimatesId)
+            {
+                rw++;
+                xlWorkSheet.Cells[rw, 3] = item[0];
+                xlWorkSheet.Cells[rw, 4] = item[1];
+            }
+
+            rw = 0;
+
+            foreach (var item in missing)
+            {
+                rw++;
+                xlWorkSheet.Cells[rw, 7] = item;
+
+            }
+            xlWorkBook.SaveAs(@"d:\export.xlsx");
+            xlWorkBook.Close();
+            MessageBox.Show("Done!");
+            Process.Start(@"d:\export.xlsx");
+            
         }
     }
 }

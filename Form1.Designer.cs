@@ -36,7 +36,6 @@ namespace ExcelImportExport
             this.ImportBtn = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.ResultsList = new System.Windows.Forms.ListBox();
-            this.ResultsList2 = new System.Windows.Forms.ListBox();
             this.coincidences = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.coincidencesBox = new System.Windows.Forms.ListBox();
@@ -45,6 +44,7 @@ namespace ExcelImportExport
             this.missingLb = new System.Windows.Forms.Label();
             this.missingCountLb = new System.Windows.Forms.Label();
             this.remarksCount = new System.Windows.Forms.Label();
+            this.ExportToExcelBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ImportBtn
@@ -67,16 +67,8 @@ namespace ExcelImportExport
             this.ResultsList.FormattingEnabled = true;
             this.ResultsList.Location = new System.Drawing.Point(210, 32);
             this.ResultsList.Name = "ResultsList";
-            this.ResultsList.Size = new System.Drawing.Size(102, 186);
+            this.ResultsList.Size = new System.Drawing.Size(157, 407);
             this.ResultsList.TabIndex = 1;
-            // 
-            // ResultsList2
-            // 
-            this.ResultsList2.FormattingEnabled = true;
-            this.ResultsList2.Location = new System.Drawing.Point(12, 228);
-            this.ResultsList2.Name = "ResultsList2";
-            this.ResultsList2.Size = new System.Drawing.Size(159, 173);
-            this.ResultsList2.TabIndex = 2;
             // 
             // coincidences
             // 
@@ -101,7 +93,7 @@ namespace ExcelImportExport
             this.coincidencesBox.FormattingEnabled = true;
             this.coincidencesBox.Location = new System.Drawing.Point(384, 32);
             this.coincidencesBox.Name = "coincidencesBox";
-            this.coincidencesBox.Size = new System.Drawing.Size(120, 186);
+            this.coincidencesBox.Size = new System.Drawing.Size(160, 407);
             this.coincidencesBox.TabIndex = 5;
             // 
             // coincidencesLb
@@ -118,7 +110,7 @@ namespace ExcelImportExport
             this.missingBox.FormattingEnabled = true;
             this.missingBox.Location = new System.Drawing.Point(564, 32);
             this.missingBox.Name = "missingBox";
-            this.missingBox.Size = new System.Drawing.Size(120, 186);
+            this.missingBox.Size = new System.Drawing.Size(146, 407);
             this.missingBox.TabIndex = 7;
             // 
             // missingLb
@@ -148,11 +140,22 @@ namespace ExcelImportExport
             this.remarksCount.TabIndex = 8;
             this.remarksCount.Text = "0";
             // 
+            // ExportToExcelBtn
+            // 
+            this.ExportToExcelBtn.Location = new System.Drawing.Point(41, 89);
+            this.ExportToExcelBtn.Name = "ExportToExcelBtn";
+            this.ExportToExcelBtn.Size = new System.Drawing.Size(91, 35);
+            this.ExportToExcelBtn.TabIndex = 9;
+            this.ExportToExcelBtn.Text = "Export To Excel";
+            this.ExportToExcelBtn.UseVisualStyleBackColor = true;
+            this.ExportToExcelBtn.Click += new System.EventHandler(this.ExportToExcelBtn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.ExportToExcelBtn);
             this.Controls.Add(this.remarksCount);
             this.Controls.Add(this.missingCountLb);
             this.Controls.Add(this.missingBox);
@@ -161,7 +164,6 @@ namespace ExcelImportExport
             this.Controls.Add(this.coincidencesBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.coincidences);
-            this.Controls.Add(this.ResultsList2);
             this.Controls.Add(this.ResultsList);
             this.Controls.Add(this.ImportBtn);
             this.Name = "Form1";
@@ -177,7 +179,6 @@ namespace ExcelImportExport
         private System.Windows.Forms.Button ImportBtn;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ListBox ResultsList;
-        private ListBox ResultsList2;
         private Label coincidences;
         private Label label1;
         private ListBox coincidencesBox;
@@ -186,6 +187,7 @@ namespace ExcelImportExport
         private Label missingLb;
         private Label missingCountLb;
         private Label remarksCount;
+        private Button ExportToExcelBtn;
     }
 }
 
