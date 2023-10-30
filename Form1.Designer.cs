@@ -45,6 +45,7 @@ namespace ExcelImportExport
             this.missingCountLb = new System.Windows.Forms.Label();
             this.remarksCount = new System.Windows.Forms.Label();
             this.ExportToExcelBtn = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // ImportBtn
@@ -150,11 +151,20 @@ namespace ExcelImportExport
             this.ExportToExcelBtn.UseVisualStyleBackColor = true;
             this.ExportToExcelBtn.Click += new System.EventHandler(this.ExportToExcelBtn_Click);
             // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(147, 201);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(612, 23);
+            this.progressBar.TabIndex = 11;
+            this.progressBar.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.ExportToExcelBtn);
             this.Controls.Add(this.remarksCount);
             this.Controls.Add(this.missingCountLb);
@@ -188,6 +198,7 @@ namespace ExcelImportExport
         private Label missingCountLb;
         private Label remarksCount;
         private Button ExportToExcelBtn;
+        private ProgressBar progressBar;
     }
 }
 

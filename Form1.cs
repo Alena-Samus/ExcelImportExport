@@ -31,7 +31,9 @@ namespace ExcelImportExport
 
         private void ImportBtn_Click(object sender, EventArgs e)
         {
-            int[] n = ExportExcel();
+           
+            ImportExcel();
+
 
             ResultsList.Items.Clear();
             coincidencesBox.Items.Clear();
@@ -85,12 +87,13 @@ namespace ExcelImportExport
                 }
             }
             missingCountLb.Text = count.ToString();
+            
         }
 
         // Импорт данных из Excel-файла (не более 5 столбцов и любое количество строк <= 50.
-        private int[] ExportExcel()
-        {
-            
+        private void ImportExcel()
+        {           
+
             int[] result = new int[]{0, 0};
             list_.Clear();
             remarks.Clear();
@@ -109,7 +112,9 @@ namespace ExcelImportExport
             ofd.Title = "Выберите файл базы данных";
 
             if (!(ofd.ShowDialog() == DialogResult.OK)) // если файл БД не выбран -> Выход
-                return result;
+                ofd.Dispose();
+
+            
 
             Excel.Application ObjWorkExcel = new Excel.Application();
 
@@ -126,6 +131,10 @@ namespace ExcelImportExport
             result[0] = lastRow;
             result[1] = lastColumn;
 
+            progressBar.Minimum = 0; 
+            progressBar.Maximum = lastRow;
+            progressBar.Step = 1;
+            progressBar.Visible = true;
 
             for (int j = 0; j < lastRow; j++) //по всем колонкам
             {
@@ -138,16 +147,19 @@ namespace ExcelImportExport
                     
                 }
                 list_.Add(temp);
-                
+
+                progressBar.PerformStep();
             }
+            progressBar.Visible = false;
 
             ObjWorkBook.Close(false, Type.Missing, Type.Missing); //закрыть не сохраняя
             
             ObjWorkExcel.Quit(); // выйти из Excel
+
+           
             
             GC.Collect(); // убрать за собой
-            
-            return result;
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -167,7 +179,9 @@ namespace ExcelImportExport
             int cCnt;
             int rw = 0;
             int cl = 0;
+
             
+
             xlApp = new Excel.Application();
             xlWorkBook = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets[1];
@@ -202,5 +216,9 @@ namespace ExcelImportExport
             Process.Start(@"d:\export.xlsx");
             
         }
+
+
+
+       
     }
 }
